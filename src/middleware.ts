@@ -2,34 +2,47 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  // Get the pathname
   const pathname = request.nextUrl.pathname;
   
-  // Define public routes that don't need protection
-  const publicRoutes = ['/login', '/register', '/services', '/about', '/contact', '/favicon.ico'];
+  // Check for token in cookies
+  const token = request.cookies.get('token');
   
-  // Skip middleware for Next.js internal routes and static files
+  // For debugging in production - add console logs that will appear in server logs
+  console.log(`Middleware running on: ${pathname}, token present: ${!!token}`);
+  if (token) {
+    console.log(`Token value: ${token.value.substring(0, 10)}...`);
+  }
+  
+  // Define auth routes (don't need protection)
+  const authRoutes = ['/login', '/register'];
+  
+  // Define public routes (accessible without token)
+  const publicRoutes = ['/services', '/about', '/contact', '/favicon.ico'];
+  
+  // Skip middleware for Next.js internal routes
   if (pathname.includes('/_next') || pathname.endsWith('.png') || pathname.endsWith('.ico')) {
     return NextResponse.next();
   }
-
+  
+  // Check if current path is an auth route
+  const isAuthRoute = authRoutes.some(route => pathname === route || pathname.startsWith(route));
+  
   // Check if current path is a public route
   const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route));
   
-  // Get token from cookies
-  const token = request.cookies.get('token');
-  
-  // Allow access to public routes without redirecting
-  if (isPublicRoute) {
-    return NextResponse.next();
-  }
-
   // Redirect to login if no token and trying to access protected pages
-  if (!token) {
-    const response = NextResponse.redirect('https://christoperfrontend-production.up.railway.app/login');
-    response.cookies.delete('token');
-    return response;
+  if (!token && !isAuthRoute && !isPublicRoute) {
+    console.log(`Redirecting to login from ${pathname} - no token found`);
+    return NextResponse.redirect(new URL('/login', request.url));
   }
-
+  
+  // Redirect to home if has token and trying to access auth routes
+  if (token && isAuthRoute) {
+    console.log(`Redirecting to home from ${pathname} - user is authenticated`);
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+  
   return NextResponse.next();
 }
 

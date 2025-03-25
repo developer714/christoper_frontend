@@ -11,12 +11,6 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import FancyLoader from '@/components/ui/FancyLoader';
 
-// Add interface for login response
-interface LoginResponse {
-  token: string;
-  // add other response fields if needed
-}
-
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,34 +32,13 @@ export default function LoginPage() {
     }
 
     try {
-      console.log('Attempting login...');
       await login(email, password);
-      
-      // Store auth state and redirect after successful login
-      localStorage.setItem('isAuthenticated', 'true');
-      console.log('Auth state stored, redirecting...');
-      
-      // Use direct window.location assignment instead of replace or href
-      window.location = 'https://christoperfrontend-production.up.railway.app/' as any;
-      
     } catch (err: any) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Failed to login');
-      localStorage.removeItem('isAuthenticated');
+      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  // Check both cookie and localStorage on mount
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    const hasCookie = document.cookie.includes('token=');
-    
-    if (isAuthenticated && hasCookie) {
-      window.location.replace('https://christoperfrontend-production.up.railway.app/');
-    }
-  }, []);
 
   useEffect(() => {
     // Check if there's an auth message to display
