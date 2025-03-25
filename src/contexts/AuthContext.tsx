@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           console.log('Checking if redirect happened');
           if (window.location.pathname.includes('login')) {
             console.log('Still on login page, using direct navigation');
-            //window.location.href = '/';
+            window.location.href = '/';
           }
         }, 500);
       }, 300);
