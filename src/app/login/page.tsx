@@ -39,7 +39,9 @@ export default function LoginPage() {
       
       // Set cookie with the actual token from your auth response
       if (loginResponse?.token) {
-        document.cookie = `token=${loginResponse.token}; path=/; secure; samesite=none; domain=.railway.app`;
+        // document.cookie = `token=${loginResponse.token}; path=/; secure; samesite=none; domain=.railway.app`;
+        document.cookie = `token=${loginResponse.token}; path=/; secure; samesite=none; domain=christoperfrontend-production.up.railway.app`;
+
       }
       
       
