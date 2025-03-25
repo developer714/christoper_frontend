@@ -138,12 +138,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       setTimeout(() => {
         console.log('Executing redirect to homepage');
-        router.push('/');
+        window.location.href = 'https://christoperfrontend-production.up.railway.app/' as any;
+        //router.push('/');
         setTimeout(() => {
           console.log('Checking if redirect happened');
           if (window.location.pathname.includes('login')) {
             console.log('Still on login page, using direct navigation');
-            //window.location.href = '/';
+            //'/';
           }
         }, 2500);
       }, 300);
