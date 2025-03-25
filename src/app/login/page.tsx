@@ -10,6 +10,7 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import FancyLoader from '@/components/ui/FancyLoader';
+import api from '@/services/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export default function LoginPage() {
       
       // Store auth state
       localStorage.setItem('isAuthenticated', 'true');
-      
+      api.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.token}`;
       // Set cookie with the actual token from your auth response
       if (loginResponse?.token) {
         // document.cookie = `token=${loginResponse.token}; path=/; secure; samesite=none; domain=.railway.app`;

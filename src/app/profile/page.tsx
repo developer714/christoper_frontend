@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { bookingAPI } from '@/services/api';
+import api, { bookingAPI } from '@/services/api';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { User, MapPin, CreditCard, Settings, LogOut, Calendar, Clock, ArrowRight } from 'lucide-react';
@@ -56,6 +56,7 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     logout();
+    api.defaults.headers.common['Authorization'] = '';
     router.push('/login');
   };
 
