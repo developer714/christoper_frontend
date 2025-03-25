@@ -42,8 +42,6 @@ export default function LoginPage() {
         document.cookie = `token=${loginResponse.token}; path=/; secure; samesite=none; domain=.railway.app`;
       }
       
-      // Redirect to home
-      window.location = 'https://christoperfrontend-production.up.railway.app/' as any;
       
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to login');
