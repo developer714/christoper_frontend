@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   
   // Get token from cookies
   const token = request.cookies.get('token');
-
+  
   // Allow access to public routes without redirecting
   if (isPublicRoute) {
     return NextResponse.next();
@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
 
   // Redirect to login if no token and trying to access protected pages
   if (!token) {
-    return NextResponse.redirect('https://christoperfrontend-production.up.railway.app/login');
+    const response = NextResponse.redirect('https://christoperfrontend-production.up.railway.app/login');
+    response.cookies.delete('token');
+    return response;
   }
 
   return NextResponse.next();
