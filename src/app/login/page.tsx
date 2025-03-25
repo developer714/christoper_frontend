@@ -41,28 +41,18 @@ export default function LoginPage() {
       console.log('Attempting login...');
       await login(email, password);
       
-      // First store both token and auth state
-      const token = document.cookie.match(/token=([^;]+)/)?.[1];
-      console.log('Token found:', token);
+      // Store auth state and redirect after successful login
+      localStorage.setItem('isAuthenticated', 'true');
+      console.log('Auth state stored, redirecting...');
       
-      if (token) {
-        localStorage.setItem('isAuthenticated', 'true');
-        console.log('Auth state stored, redirecting...');
-        
-        // Try using setTimeout to ensure state is saved before redirect
-        setTimeout(() => {
-          window.location.replace('https://christoperfrontend-production.up.railway.app/');
-        }, 100);
-      } else {
-        console.log('No token found after login');
-        setError('Authentication failed - no token received');
-      }
+      setTimeout(() => {
+        window.location.replace('https://christoperfrontend-production.up.railway.app/');
+      }, 100);
       
     } catch (err: any) {
       console.error('Login error:', err);
       setError(err.response?.data?.message || 'Failed to login');
       localStorage.removeItem('isAuthenticated');
-      document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     } finally {
       setIsSubmitting(false);
     }
