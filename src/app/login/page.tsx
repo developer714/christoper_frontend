@@ -46,7 +46,7 @@ export default function LoginPage() {
       console.log('Auth state stored, redirecting...');
       
       setTimeout(() => {
-        window.location.replace('https://christoperfrontend-production.up.railway.app/');
+        window.location.href = 'https://christoperfrontend-production.up.railway.app/';
       }, 100);
       
     } catch (err: any) {
