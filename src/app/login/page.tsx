@@ -45,9 +45,8 @@ export default function LoginPage() {
       localStorage.setItem('isAuthenticated', 'true');
       console.log('Auth state stored, redirecting...');
       
-      setTimeout(() => {
-        window.location.href = 'https://christoperfrontend-production.up.railway.app/';
-      }, 100);
+      // Use direct window.location assignment instead of replace or href
+      window.location = 'https://christoperfrontend-production.up.railway.app/' as any;
       
     } catch (err: any) {
       console.error('Login error:', err);
