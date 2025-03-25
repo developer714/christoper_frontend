@@ -33,10 +33,10 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      // Force a hard navigation after successful login
-      window.location.href = 'https://christoperfrontend-production.up.railway.app/';
+      router.push('/');
+      router.refresh();
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
+      setError(err.response?.data?.message || 'Failed to login');
     } finally {
       setIsSubmitting(false);
     }
